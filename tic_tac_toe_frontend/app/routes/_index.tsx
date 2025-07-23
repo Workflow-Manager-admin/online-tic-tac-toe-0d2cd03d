@@ -1,138 +1,318 @@
 import type { MetaFunction } from "@remix-run/node";
+import React, { useState } from "react";
 
-export const meta: MetaFunction = () => {
-  return [
-    { title: "New Remix App" },
-    { name: "description", content: "Welcome to Remix!" },
-  ];
-};
-
-export default function Index() {
-  return (
-    <div className="flex h-screen items-center justify-center">
-      <div className="flex flex-col items-center gap-16">
-        <header className="flex flex-col items-center gap-9">
-          <h1 className="leading text-2xl font-bold text-gray-800 dark:text-gray-100">
-            Welcome to <span className="sr-only">Remix</span>
-          </h1>
-          <div className="h-[144px] w-[434px]">
-            <img
-              src="/logo-light.png"
-              alt="Remix"
-              className="block w-full dark:hidden"
-            />
-            <img
-              src="/logo-dark.png"
-              alt="Remix"
-              className="hidden w-full dark:block"
-            />
-          </div>
-        </header>
-        <nav className="flex flex-col items-center justify-center gap-4 rounded-3xl border border-gray-200 p-6 dark:border-gray-700">
-          <p className="leading-6 text-gray-700 dark:text-gray-200">
-            What&apos;s next?
-          </p>
-          <ul>
-            {resources.map(({ href, text, icon }) => (
-              <li key={href}>
-                <a
-                  className="group flex items-center gap-3 self-stretch p-3 leading-normal text-blue-700 hover:underline dark:text-blue-500"
-                  href={href}
-                  target="_blank"
-                  rel="noreferrer"
-                >
-                  {icon}
-                  {text}
-                </a>
-              </li>
-            ))}
-          </ul>
-        </nav>
-      </div>
-    </div>
-  );
-}
-
-const resources = [
+// PUBLIC_INTERFACE
+export const meta: MetaFunction = () => [
+  { title: "Tic Tac Toe" },
   {
-    href: "https://remix.run/start/quickstart",
-    text: "Quick Start (5 min)",
-    icon: (
-      <svg
-        xmlns="http://www.w3.org/2000/svg"
-        width="24"
-        height="20"
-        viewBox="0 0 20 20"
-        fill="none"
-        className="stroke-gray-600 group-hover:stroke-current dark:stroke-gray-300"
-      >
-        <path
-          d="M8.51851 12.0741L7.92592 18L15.6296 9.7037L11.4815 7.33333L12.0741 2L4.37036 10.2963L8.51851 12.0741Z"
-          strokeWidth="1.5"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-        />
-      </svg>
-    ),
-  },
-  {
-    href: "https://remix.run/start/tutorial",
-    text: "Tutorial (30 min)",
-    icon: (
-      <svg
-        xmlns="http://www.w3.org/2000/svg"
-        width="24"
-        height="20"
-        viewBox="0 0 20 20"
-        fill="none"
-        className="stroke-gray-600 group-hover:stroke-current dark:stroke-gray-300"
-      >
-        <path
-          d="M4.561 12.749L3.15503 14.1549M3.00811 8.99944H1.01978M3.15503 3.84489L4.561 5.2508M8.3107 1.70923L8.3107 3.69749M13.4655 3.84489L12.0595 5.2508M18.1868 17.0974L16.635 18.6491C16.4636 18.8205 16.1858 18.8205 16.0144 18.6491L13.568 16.2028C13.383 16.0178 13.0784 16.0347 12.915 16.239L11.2697 18.2956C11.047 18.5739 10.6029 18.4847 10.505 18.142L7.85215 8.85711C7.75756 8.52603 8.06365 8.21994 8.39472 8.31453L17.6796 10.9673C18.0223 11.0653 18.1115 11.5094 17.8332 11.7321L15.7766 13.3773C15.5723 13.5408 15.5554 13.8454 15.7404 14.0304L18.1868 16.4767C18.3582 16.6481 18.3582 16.926 18.1868 17.0974Z"
-          strokeWidth="1.5"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-        />
-      </svg>
-    ),
-  },
-  {
-    href: "https://remix.run/docs",
-    text: "Remix Docs",
-    icon: (
-      <svg
-        xmlns="http://www.w3.org/2000/svg"
-        width="24"
-        height="20"
-        viewBox="0 0 20 20"
-        fill="none"
-        className="stroke-gray-600 group-hover:stroke-current dark:stroke-gray-300"
-      >
-        <path
-          d="M9.99981 10.0751V9.99992M17.4688 17.4688C15.889 19.0485 11.2645 16.9853 7.13958 12.8604C3.01467 8.73546 0.951405 4.11091 2.53116 2.53116C4.11091 0.951405 8.73546 3.01467 12.8604 7.13958C16.9853 11.2645 19.0485 15.889 17.4688 17.4688ZM2.53132 17.4688C0.951566 15.8891 3.01483 11.2645 7.13974 7.13963C11.2647 3.01471 15.8892 0.951453 17.469 2.53121C19.0487 4.11096 16.9854 8.73551 12.8605 12.8604C8.73562 16.9853 4.11107 19.0486 2.53132 17.4688Z"
-          strokeWidth="1.5"
-          strokeLinecap="round"
-        />
-      </svg>
-    ),
-  },
-  {
-    href: "https://rmx.as/discord",
-    text: "Join Discord",
-    icon: (
-      <svg
-        xmlns="http://www.w3.org/2000/svg"
-        width="24"
-        height="20"
-        viewBox="0 0 24 20"
-        fill="none"
-        className="stroke-gray-600 group-hover:stroke-current dark:stroke-gray-300"
-      >
-        <path
-          d="M15.0686 1.25995L14.5477 1.17423L14.2913 1.63578C14.1754 1.84439 14.0545 2.08275 13.9422 2.31963C12.6461 2.16488 11.3406 2.16505 10.0445 2.32014C9.92822 2.08178 9.80478 1.84975 9.67412 1.62413L9.41449 1.17584L8.90333 1.25995C7.33547 1.51794 5.80717 1.99419 4.37748 2.66939L4.19 2.75793L4.07461 2.93019C1.23864 7.16437 0.46302 11.3053 0.838165 15.3924L0.868838 15.7266L1.13844 15.9264C2.81818 17.1714 4.68053 18.1233 6.68582 18.719L7.18892 18.8684L7.50166 18.4469C7.96179 17.8268 8.36504 17.1824 8.709 16.4944L8.71099 16.4904C10.8645 17.0471 13.128 17.0485 15.2821 16.4947C15.6261 17.1826 16.0293 17.8269 16.4892 18.4469L16.805 18.8725L17.3116 18.717C19.3056 18.105 21.1876 17.1751 22.8559 15.9238L23.1224 15.724L23.1528 15.3923C23.5873 10.6524 22.3579 6.53306 19.8947 2.90714L19.7759 2.73227L19.5833 2.64518C18.1437 1.99439 16.6386 1.51826 15.0686 1.25995ZM16.6074 10.7755L16.6074 10.7756C16.5934 11.6409 16.0212 12.1444 15.4783 12.1444C14.9297 12.1444 14.3493 11.6173 14.3493 10.7877C14.3493 9.94885 14.9378 9.41192 15.4783 9.41192C16.0471 9.41192 16.6209 9.93851 16.6074 10.7755ZM8.49373 12.1444C7.94513 12.1444 7.36471 11.6173 7.36471 10.7877C7.36471 9.94885 7.95323 9.41192 8.49373 9.41192C9.06038 9.41192 9.63892 9.93712 9.6417 10.7815C9.62517 11.6239 9.05462 12.1444 8.49373 12.1444Z"
-          strokeWidth="1.5"
-        />
-      </svg>
-    ),
+    name: "description",
+    content: "A minimalistic Tic Tac Toe browser game built with Remix",
   },
 ];
+
+type Player = "X" | "O";
+type Cell = Player | null;
+
+const BOARD_SIZE = 3;
+
+const COLORS = {
+  primary: "#1E90FF", // Board border, current turn, X color
+  accent: "#32CD32", // Winner indicator, O color
+  secondary: "#FFFFFF", // Background
+  cellHover: "#F0F8FF", // Very light blue
+  border: "#E5E7EB",
+  status: "#22223b",
+};
+
+/** Helper to calculate winner given a board state. */
+function calculateWinner(board: Cell[][]): Player | null {
+  // Rows
+  for (let i = 0; i < BOARD_SIZE; i++) {
+    if (
+      board[i][0] &&
+      board[i][0] === board[i][1] &&
+      board[i][1] === board[i][2]
+    ) {
+      return board[i][0];
+    }
+  }
+  // Columns
+  for (let j = 0; j < BOARD_SIZE; j++) {
+    if (
+      board[0][j] &&
+      board[0][j] === board[1][j] &&
+      board[1][j] === board[2][j]
+    ) {
+      return board[0][j];
+    }
+  }
+  // Diagonals
+  if (board[0][0] && board[0][0] === board[1][1] && board[1][1] === board[2][2])
+    return board[0][0];
+  if (board[0][2] && board[0][2] === board[1][1] && board[1][1] === board[2][0])
+    return board[0][2];
+
+  return null;
+}
+
+// PUBLIC_INTERFACE
+function getStatusText(
+  winner: Player | null,
+  board: Cell[][],
+  currentPlayer: Player,
+  isDraw: boolean
+) {
+  if (winner) return `Player ${winner} wins!`;
+  if (isDraw) return "Draw!";
+  return `Current turn: Player ${currentPlayer}`;
+}
+
+/** The main component for the game. */
+export default function Index() {
+  // Initialize state
+  const [board, setBoard] = useState<Cell[][]>(
+    Array.from({ length: BOARD_SIZE }, () => Array(BOARD_SIZE).fill(null))
+  );
+  const [currentPlayer, setCurrentPlayer] = useState<Player>("X");
+  const [winner, setWinner] = useState<Player | null>(null);
+  const [isDraw, setIsDraw] = useState(false);
+  const [alertShown, setAlertShown] = useState(false);
+
+  // Check for win/draw on move
+  React.useEffect(() => {
+    const win = calculateWinner(board);
+    const moves = board.flat().filter(Boolean).length;
+    if (win) {
+      setWinner(win);
+      setIsDraw(false);
+      setTimeout(() => {
+        setAlertShown(true);
+      }, 250);
+    } else if (moves === BOARD_SIZE * BOARD_SIZE) {
+      setWinner(null);
+      setIsDraw(true);
+      setTimeout(() => {
+        setAlertShown(true);
+      }, 250);
+    } else {
+      setWinner(null);
+      setIsDraw(false);
+      setAlertShown(false);
+    }
+  }, [board]);
+
+  const handleCellClick = (row: number, col: number) => {
+    if (winner || isDraw) return;
+    if (board[row][col]) return;
+    setBoard((prev) => {
+      const copy = prev.map((rowArr) => rowArr.slice());
+      copy[row][col] = currentPlayer;
+      return copy;
+    });
+    setCurrentPlayer((cur) => (cur === "X" ? "O" : "X"));
+  };
+
+  const handleRestart = () => {
+    setBoard(Array.from({ length: BOARD_SIZE }, () => Array(BOARD_SIZE).fill(null)));
+    setCurrentPlayer("X");
+    setWinner(null);
+    setIsDraw(false);
+    setAlertShown(false);
+  };
+
+  // Render Board
+  return (
+    <main
+      className="flex min-h-screen bg-white items-center justify-center"
+      style={{ background: COLORS.secondary, fontFamily: "Inter, sans-serif" }}
+    >
+      <section className="w-full max-w-xs mx-auto flex flex-col items-center gap-8">
+        {/* Status Panel */}
+        <div
+          className="mb-2 w-full text-center p-3 rounded-lg font-semibold"
+          style={{
+            background: "#F8FAFC",
+            color:
+              winner && winner === "X"
+                ? COLORS.primary
+                : winner && winner === "O"
+                ? COLORS.accent
+                : COLORS.status,
+            fontSize: "1.35rem",
+            minHeight: "2.7em",
+            border: `1px solid ${COLORS.border}`,
+          }}
+          data-testid="status-panel"
+        >
+          {getStatusText(winner, board, currentPlayer, isDraw)}
+        </div>
+
+        {/* Tic Tac Toe Board */}
+        <div
+          className="grid"
+          style={{
+            gridTemplateColumns: `repeat(${BOARD_SIZE}, 3.8rem)`,
+            gridTemplateRows: `repeat(${BOARD_SIZE}, 3.8rem)`,
+            gap: "0.35rem",
+            background: COLORS.primary,
+            borderRadius: "1rem",
+            padding: "0.4rem",
+            boxShadow: "0 2px 16px 0 rgba(30,144,255,0.09)",
+          }}
+          role="group"
+          aria-label="Tic Tac Toe board"
+          data-testid="tic-tac-toe-board"
+        >
+          {board.map((row, rowIdx) =>
+            row.map((cell, colIdx) => (
+              <button
+                key={`${rowIdx}-${colIdx}`}
+                onClick={() => handleCellClick(rowIdx, colIdx)}
+                className="flex items-center justify-center text-2xl sm:text-3xl font-extrabold focus:outline-none focus:ring-2 focus:ring-blue-300 transition hover:bg-[#F0F8FF] select-none"
+                tabIndex={0}
+                aria-label={
+                  cell
+                    ? `Cell ${rowIdx + 1}, ${colIdx + 1}, filled ${cell}`
+                    : `Cell ${rowIdx + 1}, ${colIdx + 1}, empty`
+                }
+                disabled={!!cell || winner || isDraw}
+                style={{
+                  background: COLORS.secondary,
+                  borderRadius: "0.65rem",
+                  height: "3.8rem",
+                  width: "3.8rem",
+                  color:
+                    cell === "X"
+                      ? COLORS.primary
+                      : cell === "O"
+                      ? COLORS.accent
+                      : "#888",
+                  border:
+                    cell || winner || isDraw
+                      ? `1.5px solid ${COLORS.border}`
+                      : "1.5px solid #E0E7FF",
+                  cursor:
+                    cell || winner || isDraw
+                      ? "default"
+                      : "pointer",
+                  transition: "background 0.12s",
+                  fontSize: "2.2rem",
+                  willChange: "background, color",
+                  outline: "none",
+                }}
+                data-testid={`cell-${rowIdx}-${colIdx}`}
+              >
+                {cell}
+              </button>
+            ))
+          )}
+        </div>
+
+        {/* Controls */}
+        <div className="flex flex-col items-center gap-2 w-full mt-1">
+          <button
+            className="w-full py-2 rounded-lg font-bold shadow-md"
+            style={{
+              background: COLORS.primary,
+              color: "#FFF",
+              fontSize: "1.1rem",
+              border: "none",
+              outline: "none",
+              transition: "box-shadow 0.12s, background 0.15s",
+              boxShadow: "0 1.5px 10px 0 rgba(30,144,255,0.11)",
+            }}
+            onClick={handleRestart}
+            data-testid="restart-btn"
+          >
+            {board.flat().some(Boolean) || winner || isDraw ? "Restart Game" : "Start New Game"}
+          </button>
+        </div>
+
+        {/* Alert on win/draw */}
+        {alertShown && (winner || isDraw) && (
+          <button
+            type="button"
+            className="fixed top-0 left-0 w-full h-full flex items-center justify-center bg-black bg-opacity-30 z-50"
+            style={{ backdropFilter: "blur(2px)", padding: 0, border: "none", margin: 0, background: "rgba(0,0,0,0.3)" }}
+            aria-live="assertive"
+            data-testid="result-modal"
+            aria-label="Close result dialog"
+            onClick={() => setAlertShown(false)}
+          >
+            {/* Modal content */}
+            <div
+              className="bg-white rounded-xl shadow-lg px-7 py-6 flex flex-col items-center gap-3 relative"
+              style={{
+                minWidth: "17em",
+                border: `2.5px solid ${
+                  winner === "X"
+                    ? COLORS.primary
+                    : winner === "O"
+                    ? COLORS.accent
+                    : "#95a5a6"
+                }`,
+              }}
+              role="alertdialog"
+              aria-modal="true"
+              aria-label={winner ? `Player ${winner} wins!` : "It's a draw!"}
+            >
+              <span
+                className="text-2xl font-bold"
+                style={{
+                  color:
+                    winner === "X"
+                      ? COLORS.primary
+                      : winner === "O"
+                      ? COLORS.accent
+                      : "#444",
+                }}
+              >
+                {winner
+                  ? `🎉 Player ${winner} wins!`
+                  : "🤝 It's a draw!"}
+              </span>
+              <button
+                onClick={() => {
+                  setAlertShown(false);
+                  handleRestart();
+                }}
+                className="mt-3 px-5 py-2 rounded-lg font-semibold border-none"
+                style={{
+                  background:
+                    winner === "X"
+                      ? COLORS.primary
+                      : winner === "O"
+                      ? COLORS.accent
+                      : COLORS.primary,
+                  color: "#FFF",
+                  fontSize: "1rem",
+                  boxShadow: "0 1px 7px 0 rgba(30,144,255,0.11)",
+                  cursor: "pointer",
+                }}
+                data-testid="modal-restart-btn"
+              >
+                Play Again
+              </button>
+              <button
+                type="button"
+                onClick={() => setAlertShown(false)}
+                aria-label="Close"
+                className="absolute top-3 right-4 text-gray-400 hover:text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                style={{
+                  background: "none",
+                  border: "none",
+                  fontSize: "1.4rem",
+                  fontWeight: 600,
+                  padding: 0,
+                  cursor: "pointer",
+                }}
+              >
+                &times;
+              </button>
+            </div>
+          </button>
+        )}
+      </section>
+    </main>
+  );
+}
